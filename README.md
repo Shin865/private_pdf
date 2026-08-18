@@ -140,3 +140,11 @@ PDF_tool/
 ## 📝 Version
 
 **v0.1.0** — MVP
+
+## Auto Run 
+
+Run in D:\PDF_tool : 
+
+```bash
+.\run.bat
+```
