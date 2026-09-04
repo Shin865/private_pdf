@@ -62,6 +62,57 @@ export interface ConvertResult {
   image_count?: number;
 }
 
+/* ===== Office Conversion Types ===== */
+export type WordMode = 'preserve_layout' | 'flowing_text' | 'ocr';
+export type ExcelMode = 'automatic' | 'detect_tables' | 'one_page_one_sheet' | 'all_pages_one_sheet';
+export type PptMode = 'editable' | 'exact';
+export type PptResolution = 'standard' | 'high';
+export type OfficeTarget = 'word' | 'excel' | 'powerpoint' | 'text';
+
+export interface OfficeConvertResult extends FileResult {
+  mode?: string;
+}
+
+export interface WordOptions {
+  mode: WordMode;
+  extractImages: boolean;
+  detectTables: boolean;
+}
+
+export interface ExcelOptions {
+  mode: ExcelMode;
+  pages?: number[];
+}
+
+export interface PowerPointOptions {
+  mode: PptMode;
+  pages?: number[];
+  resolution: PptResolution;
+}
+
+export interface TextOptions {
+  pages?: number[];
+  useOcr: boolean;
+}
+
+/* ===== OCR Types ===== */
+export interface OcrPdfResult extends FileResult {
+  original_size: number;
+  languages: string;
+}
+
+export interface OcrImageResult {
+  text: string;
+  confidence: number;
+  languages: string;
+}
+
+export interface OcrStatus {
+  available: boolean;
+  engine: string;
+  message: string;
+}
+
 /* ===== Tool Config ===== */
 export interface ToolInfo {
   id: string;
@@ -71,6 +122,7 @@ export interface ToolInfo {
   path: string;
   color: string;
   gradient: string;
+  category?: string;
 }
 
 /* ===== Upload State ===== */

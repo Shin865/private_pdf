@@ -8,6 +8,8 @@ import Rotate from './pages/Rotate';
 import PageEditor from './pages/PageEditor';
 import Convert from './pages/Convert';
 import Watermark from './pages/Watermark';
+import PdfToOffice from './pages/PdfToOffice';
+import OcrPage from './pages/OcrPage';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/pages" element={<PageEditor />} />
           <Route path="/convert" element={<Convert />} />
           <Route path="/watermark" element={<Watermark />} />
+          <Route path="/pdf-to-office" element={<PdfToOffice />} />
+          <Route path="/ocr" element={<OcrPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

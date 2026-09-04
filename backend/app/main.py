@@ -12,6 +12,7 @@ from app.services.file_manager import periodic_cleanup, FileManager
 from app.routes.pdf_routes import router as pdf_router
 from app.routes.convert_routes import router as convert_router
 from app.routes.file_routes import router as file_router
+from app.routes.ocr_routes import router as ocr_router
 
 # Configure logging
 logging.basicConfig(
@@ -65,6 +66,7 @@ app.add_middleware(
 app.include_router(pdf_router, prefix="/api/pdf", tags=["PDF Operations"])
 app.include_router(convert_router, prefix="/api/convert", tags=["Conversions"])
 app.include_router(file_router, prefix="/api/files", tags=["File Management"])
+app.include_router(ocr_router, prefix="/api/ocr", tags=["OCR"])
 
 
 @app.get("/")
@@ -85,3 +87,5 @@ async def health_check():
         "status": "healthy",
         "temp_storage": stats,
     }
+
+# Trigger Uvicorn reload

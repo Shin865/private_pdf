@@ -9,6 +9,10 @@ import type {
   SplitResult,
   CompressResult,
   ConvertResult,
+  OfficeConvertResult,
+  OcrPdfResult,
+  OcrImageResult,
+  OcrStatus,
 } from '../types';
 
 const API_BASE = '/api';
@@ -23,17 +27,6 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-function createFormData(fields: Record<string, string | Blob | Blob[]>): FormData {
-  const form = new FormData();
-  for (const [key, value] of Object.entries(fields)) {
-    if (Array.isArray(value)) {
-      value.forEach((v) => form.append(key, v));
-    } else {
-      form.append(key, value);
-    }
-  }
-  return form;
-}
 
 /* ===== PDF Operations ===== */
 
@@ -163,10 +156,96 @@ export async function imageToPdf(files: File[]): Promise<FileResult> {
   return handleResponse<FileResult>(res);
 }
 
+/* ===== PDF → Office Conversions ===== */
+
+export async function pdfToWord(
+  file: File,
+  options: { mode?: string; extractImages?: boolean; detectTables?: boolean } = {}
+): Promise<OfficeConvertResult> {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('mode', options.mode || 'preserve_layout');
+  form.append('extract_images', String(options.extractImages ?? true));
+  form.append('detect_tables', String(options.detectTables ?? true));
+  const res = await fetch(`${API_BASE}/convert/pdf-to-word`, { method: 'POST', body: form });
+  return handleResponse<OfficeConvertResult>(res);
+}
+
+export async function pdfToExcel(
+  file: File,
+  options: { mode?: string; pages?: number[] } = {}
+): Promise<OfficeConvertResult> {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('mode', options.mode || 'automatic');
+  if (options.pages) form.append('pages', JSON.stringify(options.pages));
+  const res = await fetch(`${API_BASE}/convert/pdf-to-excel`, { method: 'POST', body: form });
+  return handleResponse<OfficeConvertResult>(res);
+}
+
+export async function pdfToPowerpoint(
+  file: File,
+  options: { mode?: string; pages?: number[]; resolution?: string } = {}
+): Promise<OfficeConvertResult> {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('mode', options.mode || 'exact');
+  if (options.pages) form.append('pages', JSON.stringify(options.pages));
+  form.append('resolution', options.resolution || 'standard');
+  const res = await fetch(`${API_BASE}/convert/pdf-to-powerpoint`, { method: 'POST', body: form });
+  return handleResponse<OfficeConvertResult>(res);
+}
+
+export async function pdfToText(
+  file: File,
+  options: { pages?: number[]; useOcr?: boolean } = {}
+): Promise<OfficeConvertResult> {
+  const form = new FormData();
+  form.append('file', file);
+  if (options.pages) form.append('pages', JSON.stringify(options.pages));
+  form.append('use_ocr', String(options.useOcr ?? false));
+  const res = await fetch(`${API_BASE}/convert/pdf-to-text`, { method: 'POST', body: form });
+  return handleResponse<OfficeConvertResult>(res);
+}
+
+/* ===== OCR Operations ===== */
+
+export async function ocrPdf(file: File, languages?: string): Promise<OcrPdfResult> {
+  const form = new FormData();
+  form.append('file', file);
+  if (languages) form.append('languages', languages);
+  const res = await fetch(`${API_BASE}/ocr/pdf`, { method: 'POST', body: form });
+  return handleResponse<OcrPdfResult>(res);
+}
+
+export async function ocrImage(file: File, languages?: string): Promise<OcrImageResult> {
+  const form = new FormData();
+  form.append('file', file);
+  if (languages) form.append('languages', languages);
+  const res = await fetch(`${API_BASE}/ocr/image`, { method: 'POST', body: form });
+  return handleResponse<OcrImageResult>(res);
+}
+
+export async function getOcrStatus(): Promise<OcrStatus> {
+  const res = await fetch(`${API_BASE}/ocr/status`);
+  return handleResponse<OcrStatus>(res);
+}
+
 /* ===== File Operations ===== */
 
 export function getDownloadUrl(fileId: string): string {
   return `${API_BASE}/files/download/${fileId}`;
+}
+
+export async function getPreviewThumbnails(
+  fileId: string,
+  width = 200,
+  maxPages = 6
+): Promise<ThumbnailsResponse> {
+  const res = await fetch(
+    `${API_BASE}/files/preview/${fileId}?width=${width}&max_pages=${maxPages}`
+  );
+  return handleResponse<ThumbnailsResponse>(res);
 }
 
 export async function downloadFile(fileId: string, filename: string): Promise<void> {

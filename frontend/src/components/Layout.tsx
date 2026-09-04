@@ -1,14 +1,31 @@
 import { Link, useLocation } from 'react-router-dom';
 
-const navItems = [
-  { path: '/', label: 'Home', icon: '🏠' },
-  { path: '/merge', label: 'Merge', icon: '📄' },
-  { path: '/split', label: 'Split', icon: '✂️' },
-  { path: '/compress', label: 'Compress', icon: '🗜️' },
-  { path: '/rotate', label: 'Rotate', icon: '🔄' },
-  { path: '/pages', label: 'Pages', icon: '📑' },
-  { path: '/convert', label: 'Convert', icon: '🖼️' },
-  { path: '/watermark', label: 'Watermark', icon: '💧' },
+const navSections = [
+  {
+    title: 'PDF Organizer',
+    items: [
+      { path: '/', label: 'Home', icon: '🏠' },
+      { path: '/merge', label: 'Merge', icon: '📄' },
+      { path: '/split', label: 'Split', icon: '✂️' },
+      { path: '/compress', label: 'Compress', icon: '🗜️' },
+      { path: '/rotate', label: 'Rotate', icon: '🔄' },
+      { path: '/pages', label: 'Pages', icon: '📑' },
+      { path: '/watermark', label: 'Watermark', icon: '💧' },
+    ],
+  },
+  {
+    title: 'Converter',
+    items: [
+      { path: '/convert', label: 'PDF ↔ Image', icon: '🖼️' },
+      { path: '/pdf-to-office', label: 'PDF → Office', icon: '📋' },
+    ],
+  },
+  {
+    title: 'OCR',
+    items: [
+      { path: '/ocr', label: 'OCR Tools', icon: '🔍' },
+    ],
+  },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -34,31 +51,42 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Navigation */}
         <nav className="flex-1 py-4 px-3 overflow-y-auto">
-          <div className="space-y-1">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 no-underline ${
-                    isActive
-                      ? 'bg-[var(--color-accent-violet)]/15 text-[var(--color-accent-cyan)] border border-[var(--color-accent-violet)]/20'
-                      : 'text-[var(--color-dark-200)] hover:bg-[var(--color-dark-700)] hover:text-white border border-transparent'
-                  }`}
-                >
-                  <span className="text-base">{item.icon}</span>
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </div>
+          {navSections.map((section, sectionIdx) => (
+            <div key={section.title} className={sectionIdx > 0 ? 'mt-5' : ''}>
+              {section.title !== 'PDF Organizer' && (
+                <div className="px-4 mb-2">
+                  <span className="text-[10px] font-semibold text-[var(--color-dark-400)] uppercase tracking-widest">
+                    {section.title}
+                  </span>
+                </div>
+              )}
+              <div className="space-y-1">
+                {section.items.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 no-underline ${
+                        isActive
+                          ? 'bg-[var(--color-accent-violet)]/15 text-[var(--color-accent-cyan)] border border-[var(--color-accent-violet)]/20'
+                          : 'text-[var(--color-dark-200)] hover:bg-[var(--color-dark-700)] hover:text-white border border-transparent'
+                      }`}
+                    >
+                      <span className="text-base">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         {/* Footer */}
         <div className="p-4 border-t border-[var(--color-dark-600)]">
           <p className="text-[10px] text-[var(--color-dark-400)] text-center m-0">
-            v0.1.0 • Localhost Only
+            v0.2.0 • Localhost Only
           </p>
         </div>
       </aside>

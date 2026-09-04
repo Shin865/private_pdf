@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 # Base directory
@@ -27,6 +28,28 @@ TEMP_FILE_MAX_AGE_MINUTES = 30
 DEFAULT_DPI = 150
 DEFAULT_IMAGE_FORMAT = "jpg"
 DEFAULT_JPEG_QUALITY = 85
+
+# Conversion rendering DPI
+RENDER_DPI_STANDARD = 150
+RENDER_DPI_HIGH = 300
+
+# OCR settings
+OCR_LANGUAGES = "eng+ind"  # English + Indonesian
+
+# Auto-detect Tesseract path
+_tesseract_path = shutil.which("tesseract")
+if not _tesseract_path and os.name == "nt":
+    # Common Windows install paths
+    for p in [
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+        r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+        os.path.expanduser(r"~\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"),
+    ]:
+        if os.path.isfile(p):
+            _tesseract_path = p
+            break
+
+TESSERACT_CMD = _tesseract_path  # None if not found
 
 # CORS settings (for React dev server)
 CORS_ORIGINS = [

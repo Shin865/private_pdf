@@ -315,16 +315,20 @@ def add_watermark(
             x = rect.width / 2
             y = rect.height / 2
 
-        # Create text writer for watermark
-        tw = fitz.TextWriter(page.rect)
-        font = fitz.Font("helv")
-
-        # Insert the watermark text
+        # Insert the watermark text with morph for rotation
+        mat = fitz.Matrix(-rotation)
         text_point = fitz.Point(x, y)
-        tw.append(text_point, text, font=font, fontsize=font_size)
-
+        
         # Apply with opacity and rotation
-        tw.write_text(page, opacity=opacity, color=color, rotate=rotation)
+        page.insert_text(
+            text_point, 
+            text, 
+            fontsize=font_size, 
+            fontname="helv", 
+            color=color, 
+            fill_opacity=opacity, 
+            morph=(text_point, mat)
+        )
 
     output = doc.tobytes(deflate=True, garbage=4)
     doc.close()

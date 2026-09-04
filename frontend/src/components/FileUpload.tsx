@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useRef } from 'react';
-import { formatFileSize } from '../services/api';
 
 interface FileUploadProps {
   onFilesSelected: (files: File[]) => void;
