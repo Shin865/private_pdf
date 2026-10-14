@@ -114,18 +114,11 @@ export default function Home() {
     <div className="animate-fade-in">
       {/* Hero Section */}
       <div className="text-center mb-12 pt-8">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-accent-violet)]/10 border border-[var(--color-accent-violet)]/20 mb-6">
-          <div className="w-2 h-2 rounded-full bg-[var(--color-accent-emerald)] animate-pulse" />
-          <span className="text-xs font-medium text-[var(--color-accent-violet)]">Running Locally • 100% Private</span>
-        </div>
-
         <h1 className="text-5xl font-extrabold mb-4 leading-tight">
           <span className="gradient-text">PDF Toolbox</span>
         </h1>
         <p className="text-lg text-[var(--color-dark-200)] max-w-2xl mx-auto leading-relaxed">
-          All your PDF needs in one place. Process files locally —
-          <span className="text-[var(--color-accent-cyan)]"> no uploads to cloud</span>,
-          no data leaves your computer.
+          All your PDF needs in one place.
         </p>
       </div>
 
@@ -184,21 +177,6 @@ export default function Home() {
           </div>
         </div>
       ))}
-
-      {/* Features */}
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          { icon: '🔒', title: '100% Private', desc: 'Files never leave your computer. All processing happens locally.' },
-          { icon: '⚡', title: 'Lightning Fast', desc: 'No network delays. Direct processing on your machine.' },
-          { icon: '🌐', title: 'No Internet Required', desc: 'Works completely offline after installation.' },
-        ].map((feature, i) => (
-          <div key={i} className="text-center p-6">
-            <div className="text-3xl mb-3">{feature.icon}</div>
-            <h4 className="text-sm font-semibold text-white mb-1">{feature.title}</h4>
-            <p className="text-xs text-[var(--color-dark-300)] m-0">{feature.desc}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
