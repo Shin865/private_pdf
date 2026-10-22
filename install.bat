@@ -10,9 +10,9 @@ cd /d D:\PDF_tool
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo [INFO] Python tidak ditemukan. Memulai instalasi Python...
-    winget install -e --id Python.Python.3.10 --accept-package-agreements --accept-source-agreements
+    winget install -e --id Python.Python.3.11 --accept-package-agreements --accept-source-agreements
     echo [INFO] Python berhasil diinstal.
-    echo PENTING: Anda mungkin perlu merestart komputer/terminal agar Python terbaca sistem, lalu jalankan script ini lagi.
+    echo PENTING: Jika baru diinstal, Anda mungkin perlu restart komputer.
 ) else (
     echo [OK] Python sudah terinstal.
 )
@@ -23,7 +23,7 @@ if %errorlevel% neq 0 (
     echo [INFO] Node.js tidak ditemukan. Memulai instalasi Node.js...
     winget install -e --id OpenJS.NodeJS --accept-package-agreements --accept-source-agreements
     echo [INFO] Node.js berhasil diinstal.
-    echo PENTING: Anda mungkin perlu merestart komputer/terminal agar NPM terbaca sistem, lalu jalankan script ini lagi.
+    echo PENTING: Jika baru diinstal, Anda mungkin perlu restart komputer.
 ) else (
     echo [OK] Node.js sudah terinstal.
 )
@@ -33,18 +33,21 @@ echo ===================================================
 echo MENGINSTAL DEPENDENSI PROJECT
 echo ===================================================
 
-echo [1/2] Menginstal dependencies backend (Python)...
+echo [1/2] Menginstal dependencies Backend (Python)...
 cd /d D:\PDF_tool\backend
-pip install -r requirements.txt
+call pip install -r requirements.txt
 
 echo.
-echo [2/2] Menginstal dependencies frontend (Node.js)...
+echo [2/2] Menginstal dependencies Frontend (Node.js)...
 cd /d D:\PDF_tool\frontend
-npm install
+echo Menginstal package dasar...
+call npm install
+echo Memastikan Vite terinstal...
+call npm install vite --save-dev
 
 echo.
 echo ===================================================
 echo INSTALASI SELESAI!
-echo Silakan jalankan 'run.bat' untuk memulai aplikasi.
+echo Silakan jalankan '2_run.bat' untuk memulai aplikasi.
 echo ===================================================
 pause
