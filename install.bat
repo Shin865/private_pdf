@@ -1,53 +1,85 @@
 @echo off
-echo ===================================================
-echo SETUP DAN INSTALASI PDF TOOL
-echo ===================================================
+setlocal EnableExtensions
 
-:: Pindah ke direktori utama
-cd /d D:\PDF_tool
+REM ============================================================
+REM  install.bat (PDF_tool)
+REM  Base direktori = folder tempat file ini berada (root projek),
+REM  jadi bisa dijalankan dari drive/lokasi mana pun.
+REM ============================================================
 
-:: 1. Cek dan Install Python
-python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [INFO] Python tidak ditemukan. Memulai instalasi Python...
-    winget install -e --id Python.Python.3.11 --accept-package-agreements --accept-source-agreements
-    echo [INFO] Python berhasil diinstal.
-    echo PENTING: Jika baru diinstal, Anda mungkin perlu restart komputer.
-) else (
-    echo [OK] Python sudah terinstal.
+set "ROOT=%~dp0"
+set "BACKEND_DIR=%ROOT%backend"
+set "FRONTEND_DIR=%ROOT%frontend"
+
+echo ============================================
+echo  Root projek : %ROOT%
+echo ============================================
+echo.
+
+REM ---------- Cek prasyarat ----------
+where python >nul 2>&1
+if errorlevel 1 (
+    echo [ERROR] Python tidak ditemukan di PATH. Install Python terlebih dahulu.
+    goto :fail
 )
 
-:: 2. Cek dan Install Node.js
-npm --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [INFO] Node.js tidak ditemukan. Memulai instalasi Node.js...
-    winget install -e --id OpenJS.NodeJS --accept-package-agreements --accept-source-agreements
-    echo [INFO] Node.js berhasil diinstal.
-    echo PENTING: Jika baru diinstal, Anda mungkin perlu restart komputer.
-) else (
-    echo [OK] Node.js sudah terinstal.
+where npm >nul 2>&1
+if errorlevel 1 (
+    echo [ERROR] npm tidak ditemukan di PATH. Install Node.js terlebih dahulu.
+    goto :fail
 )
 
-echo.
-echo ===================================================
-echo MENGINSTAL DEPENDENSI PROJECT
-echo ===================================================
+if not exist "%BACKEND_DIR%\" (
+    echo [ERROR] Folder backend tidak ditemukan: %BACKEND_DIR%
+    goto :fail
+)
 
-echo [1/2] Menginstal dependencies Backend (Python)...
-cd /d D:\PDF_tool\backend
-call pip install -r requirements.txt
+if not exist "%FRONTEND_DIR%\" (
+    echo [ERROR] Folder frontend tidak ditemukan: %FRONTEND_DIR%
+    goto :fail
+)
 
+REM ---------- Backend ----------
+echo [1/2] Install Backend...
+pushd "%BACKEND_DIR%"
+
+python -m pip install -r requirements.txt
+if errorlevel 1 (
+    echo [ERROR] Gagal menginstall requirements.txt
+    popd
+    goto :fail
+)
+
+popd
+echo [OK] Backend selesai.
 echo.
-echo [2/2] Menginstal dependencies Frontend (Node.js)...
-cd /d D:\PDF_tool\frontend
-echo Menginstal package dasar...
+
+REM ---------- Frontend ----------
+echo [2/2] Install Frontend...
+pushd "%FRONTEND_DIR%"
+
 call npm install
-echo Memastikan Vite terinstal...
-call npm install vite --save-dev
+if errorlevel 1 (
+    echo [ERROR] Gagal menjalankan npm install
+    popd
+    goto :fail
+)
 
+popd
+echo [OK] Frontend selesai.
 echo.
-echo ===================================================
-echo INSTALASI SELESAI!
-echo Silakan jalankan '2_run.bat' untuk memulai aplikasi.
-echo ===================================================
+
+echo ============================================
+echo  Instalasi selesai!
+echo ============================================
+echo.
 pause
+endlocal
+exit /b 0
+
+:fail
+echo.
+echo Instalasi dihentikan karena ada error.
+pause
+endlocal
+exit /b 1
