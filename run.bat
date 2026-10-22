@@ -1,22 +1,21 @@
 @echo off
-echo =========================================
-echo       Starting PDF Tool Services
-echo =========================================
+echo ===================================================
+echo MENJALANKAN SERVER PDF TOOL...
+echo ===================================================
 
-echo.
-echo Starting Backend (FastAPI)...
-start "PDF Tool Backend" cmd /k "cd backend && uvicorn app.main:app --reload --port 8000"
+:: Menjalankan Backend (Terminal 1)
+echo Memulai Backend (Port 8000)...
+start "Backend Server" cmd /k "cd /d D:\PDF_tool\backend && uvicorn app.main:app --reload --port 8000"
 
-echo Starting Frontend (React/Vite)...
-start "PDF Tool Frontend" cmd /k "cd frontend && npm run dev"
+:: Menjalankan Frontend (Terminal 2)
+echo Memulai Frontend (Port 5173)...
+start "Frontend Server" cmd /k "cd /d D:\PDF_tool\frontend && npm run dev"
 
+:: Buka Browser
 timeout /t 4 /nobreak >nul
 start http://localhost:5173
 
 echo.
-echo All services have been launched in new windows.
-echo - Backend API: http://127.0.0.1:8000
-echo - Frontend UI:   http://localhost:5173
-echo.
-echo You can safely close this window. To stop the services, close the two newly opened command prompts.
+echo Semua server sedang berjalan di jendela baru.
+echo Jendela ini bisa Anda tutup.
 pause
