@@ -6,7 +6,6 @@ import io
 import pymupdf as fitz  # PyMuPDF
 import logging
 from PIL import Image
-from pathlib import Path
 from app.config import DEFAULT_DPI, DEFAULT_JPEG_QUALITY
 
 logger = logging.getLogger("pdf-tool.image-service")

@@ -41,8 +41,6 @@ export interface FileResult {
   download_url: string;
 }
 
-export interface MergeResult extends FileResult {}
-
 export interface SplitResult {
   files: FileResult[];
 }
@@ -123,23 +121,4 @@ export interface ToolInfo {
   color: string;
   gradient: string;
   category?: string;
-}
-
-/* ===== Upload State ===== */
-export interface UploadedFile {
-  id: string;
-  file: File;
-  name: string;
-  size: number;
-  progress: number;
-  status: 'pending' | 'uploading' | 'done' | 'error';
-  thumbnails?: ThumbnailData[];
-  pageCount?: number;
-}
-
-/* ===== Page Selection ===== */
-export interface SelectedPage {
-  pageNumber: number;
-  rotation: number;
-  selected: boolean;
 }

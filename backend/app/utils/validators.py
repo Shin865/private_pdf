@@ -2,10 +2,9 @@
 File validation utilities for PDF Tool.
 Validates file extensions, MIME types, file size, and PDF integrity.
 """
-import os
 from pathlib import Path
 from fastapi import UploadFile, HTTPException
-from app.config import MAX_FILE_SIZE, ALLOWED_PDF_EXTENSIONS, ALLOWED_IMAGE_EXTENSIONS, ALLOWED_EXTENSIONS
+from app.config import MAX_FILE_SIZE, ALLOWED_EXTENSIONS
 
 
 def validate_file_extension(filename: str, allowed: set = None) -> str:

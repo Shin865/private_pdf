@@ -5,7 +5,6 @@ Core service that handles all PDF manipulation operations using PyMuPDF and pike
 import io
 import pymupdf as fitz  # PyMuPDF
 import logging
-from pathlib import Path
 from typing import Optional
 
 logger = logging.getLogger("pdf-tool.pdf-service")

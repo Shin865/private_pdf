@@ -4,13 +4,11 @@ Handles PDF → Word (.docx) conversion with layout preservation.
 """
 import io
 import logging
-from typing import Optional
 
 import pymupdf as fitz
 from docx import Document
-from docx.shared import Inches, Pt, Cm, RGBColor, Emu
+from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.section import WD_ORIENT
 
 from app.utils.pdf_detector import page_has_text, detect_pdf_type
 from app.services.ocr_service import extract_text_ocr, is_tesseract_available

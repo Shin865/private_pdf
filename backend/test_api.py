@@ -1,6 +1,5 @@
 """Integration test for all PDF Tool API endpoints."""
 import requests
-import json
 import sys
 
 base = "http://localhost:8000/api"

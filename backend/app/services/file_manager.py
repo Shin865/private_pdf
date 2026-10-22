@@ -2,15 +2,13 @@
 Temporary file management for PDF Tool.
 Handles file storage with UUID naming, organized directories, and auto-cleanup.
 """
-import os
 import uuid
 import time
 import shutil
 import asyncio
 import logging
 from pathlib import Path
-from datetime import datetime, timedelta
-from app.config import UPLOAD_DIR, PROCESSING_DIR, OUTPUT_DIR, TEMP_DIR, TEMP_FILE_MAX_AGE_MINUTES
+from app.config import UPLOAD_DIR, PROCESSING_DIR, OUTPUT_DIR, TEMP_FILE_MAX_AGE_MINUTES
 
 logger = logging.getLogger("pdf-tool.file-manager")
 

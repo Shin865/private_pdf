@@ -87,5 +87,3 @@ async def health_check():
         "status": "healthy",
         "temp_storage": stats,
     }
-
-# Trigger Uvicorn reload

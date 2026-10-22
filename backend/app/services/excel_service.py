@@ -4,7 +4,6 @@ Handles PDF → Excel (.xlsx) conversion with table detection.
 """
 import io
 import logging
-from typing import Optional
 
 import pymupdf as fitz
 import pdfplumber

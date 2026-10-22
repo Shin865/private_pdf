@@ -5,9 +5,7 @@ Handles PDF ↔ Image conversions and PDF → Office conversions.
 import io
 import json
 import zipfile
-import base64
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from fastapi.responses import Response
 from app.services import image_service
 from app.services import word_service
 from app.services import excel_service
@@ -52,7 +50,6 @@ async def pdf_to_image(
     if len(results) == 1:
         # Return single image directly
         filename, img_bytes = results[0]
-        media_type = "image/jpeg" if format.lower() in ("jpg", "jpeg") else "image/png"
         file_id, _ = FileManager.save_output(img_bytes, f".{format}")
         return {
             "type": "single",

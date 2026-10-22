@@ -4,13 +4,11 @@ Handles PDF → PowerPoint (.pptx) conversion with editable and exact modes.
 """
 import io
 import logging
-from typing import Optional
 
 import pymupdf as fitz
 from pptx import Presentation
-from pptx.util import Inches, Pt, Emu
+from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
-from pptx.enum.text import PP_ALIGN
 
 from app.config import RENDER_DPI_STANDARD, RENDER_DPI_HIGH
 

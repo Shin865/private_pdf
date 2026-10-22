@@ -3,9 +3,7 @@ OCR Service for PDF Tool.
 Provides OCR capabilities using Tesseract and OCRmyPDF.
 """
 import io
-import tempfile
 import logging
-from pathlib import Path
 
 import pymupdf as fitz
 from PIL import Image
